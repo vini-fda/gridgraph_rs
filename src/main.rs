@@ -4,6 +4,14 @@ use gridgraph_rs::{GridGraphParams, generate_instance};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    if matches!(args.first().map(|s| s.as_str()), Some("-h" | "--help")) {
+        println!(
+            "Usage: gridgraph_rs [HEIGHT WIDTH MAXCAP MAXCOST SEED]\n\
+            - Pass the five integers as CLI args, or\n\
+            - Pipe a single line with the values via stdin."
+        );
+        return Ok(());
+    }
     let nums = if args.is_empty() {
         read_numbers_from_stdin()?
     } else {
