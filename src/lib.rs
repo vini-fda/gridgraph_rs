@@ -1,11 +1,11 @@
-//! GRIDGRAPH — min-cost flow grid graph generator
+//! GRIDGRAPH, a min-cost flow grid graph generator
 //!
 //! Produces a min-cost flow problem instance in DIMACS `.min` format,
 //! laid out on a directed grid graph. Originally by Mauricio G.C. Resende
 //! (1991), AT&T Bell Laboratories.
 //!
-//! This is a Rust rewrite of the original Fortran program
-//! `ggraph1.f`, producing bit-for-bit identical output.
+//! This is a Rust rewrite of the [original](http://archive.dimacs.rutgers.edu/pub/netflow/generators/network/gridgraph/)
+//! Fortran program `ggraph1.f`.
 //!
 //! # Usage
 //!
