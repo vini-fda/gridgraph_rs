@@ -71,7 +71,7 @@ The end-to-end tests build the Fortran binary automatically via `make`
 
 ## Library API
 
-`gridgraph_rs` is now a reusable library crate. Add it to another project's
+`gridgraph_rs` is a library crate. Add it to another project's
 `Cargo.toml` with
 
 ```
