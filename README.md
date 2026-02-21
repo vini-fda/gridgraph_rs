@@ -1,4 +1,5 @@
 # gridgraph-rs
+[![CI](https://github.com/vini-fda/gridgraph_rs/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/vini-fda/gridgraph_rs/actions/workflows/rust.yml)
 
 Zero-dependency Rust rewrite of the **GRIDGRAPH** min-cost flow problem
 generator. The [original](http://archive.dimacs.rutgers.edu/pub/netflow/generators/network/gridgraph/)
