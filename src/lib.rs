@@ -263,7 +263,7 @@ impl DimacsInstance {
 
         let mut adapter = Adapter(&mut writer);
         self.write_dimacs(&mut adapter)
-            .map_err(|_| io::Error::new(io::ErrorKind::Other, "failed to format DIMACS output"))
+            .map_err(|_| std::io::Error::other("failed to format DIMACS output"))
     }
 
     /// Convenience helper that writes the DIMACS output to a buffered file on disk.
