@@ -2,9 +2,15 @@
 name = "gridgraph_rs"
 version = "0.1.0"
 edition = "2024"
-description = "Min-cost flow grid graph generator (DIMACS format) — Rust rewrite of Resende's 1991 Fortran GRIDGRAPH"
+description = "Rust rewrite of GRIDGRAPH, a min-cost flow grid graph generator"
 license = "MIT"
-keywords = ["network-flow", "min-cost-flow", "dimacs", "graph-generator", "benchmark"]
+keywords = ["network-flow", "min-cost-flow", "dimacs", "graph-generator"]
 categories = ["command-line-utilities", "algorithms"]
+readme = "README.md"
 
 [dependencies]
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+strip = true
