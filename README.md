@@ -7,7 +7,7 @@ is a 1991 Fortran program by Mauricio G.C. Resende (AT&T Bell Labs).
 The Rust binary produces **bit-for-bit identical output** to the patched
 Fortran reference.
 
-## Usage
+## Command-line usage
 
 ```
 echo "H W MAXCAP MAXCOST SEED" | cargo run --release
@@ -68,3 +68,36 @@ The end-to-end tests build the Fortran binary automatically via `make`
 - L. Schrage, "A More Portable FORTRAN Random Number Generator", *ACM TOMS*, 1979.
 - D. Goldfarb & M.D. Grigoriadis, "A computational comparison of the Dinic
   and network simplex methods for maximum flow", *Annals of Operations Research* 13, 1988.
+
+## Library API
+
+`gridgraph_rs` is now a reusable library crate. Add it to another project's
+`Cargo.toml` with
+
+```
+cargo add gridgraph_rs
+```
+
+```rust
+use gridgraph_rs::{generate_instance, GridGraphParams};
+
+fn main() {
+    let params = GridGraphParams::new(3, 3, 100, 10, 12345).unwrap();
+    let instance = generate_instance(params);
+
+    // Render DIMACS output
+    println!("{}", instance.to_dimacs_string());
+
+    // Or inspect individual arcs
+    for arc in instance.arcs() {
+        println!("{} -> {} (cap {}, cost {})", arc.from, arc.to, arc.capacity, arc.cost);
+    }
+}
+```
+
+Public API highlights:
+
+- `GridGraphParams::new` validates the five GRIDGRAPH parameters.
+- `generate_instance` returns a [`DimacsInstance`](src/lib.rs) with metadata and arc list.
+- `DimacsInstance::write_dimacs` / `to_dimacs_string` format DIMACS output.
+- `generate_dimacs` is a convenience helper returning the formatted string in one step.
