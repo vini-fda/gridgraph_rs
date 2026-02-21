@@ -22,7 +22,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         nums
     };
 
-    let params = GridGraphParams::new(nums[0], nums[1], nums[2], nums[3], nums[4])?;
+    let params = GridGraphParams::new(nums[0], nums[1], nums[2], nums[3], nums[4])
+        .map_err(|e| format!("invalid parameters: {e}"))?;
     let instance = generate_instance(params);
     let stdout = io::stdout();
     let mut writer = BufWriter::new(stdout.lock());
