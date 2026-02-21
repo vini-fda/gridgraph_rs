@@ -9,7 +9,9 @@
 //!
 //! # Usage
 //!
-//! ```text
+//! ## Quick start
+//!
+//! ```rust
 //! use gridgraph_rs::{generate_instance, GridGraphParams};
 //!
 //! let params = GridGraphParams::new(3, 3, 100, 10, 12345).unwrap();
@@ -17,11 +19,44 @@
 //! println!("{}", instance.to_dimacs_string());
 //! ```
 //!
+//! ## Writing to a file
+//!
+//! Use [`DimacsInstance::write_dimacs_io`] to stream into any `io::Write` or
+//! the convenience [`DimacsInstance::write_to_file`] helper for buffered file
+//! output.
+//!
+//! ```rust
+//! use gridgraph_rs::{generate_instance, GridGraphParams};
+//! use std::error::Error;
+//! use std::fs::File;
+//! use std::io::{BufWriter, Write};
+//!
+//! fn main() -> Result<(), Box<dyn Error>> {
+//!     let params = GridGraphParams::new(3, 3, 100, 10, 12345)?;
+//!     let instance = generate_instance(params);
+//!     let path = std::env::temp_dir().join("gridgraph_doc_example.min");
+//!
+//!     // Write to any `io::Write` implementor
+//!     {
+//!         let file = File::create(&path)?;
+//!         let mut buf = BufWriter::new(file);
+//!         instance.write_dimacs_io(&mut buf)?;
+//!         buf.flush()?;
+//!     }
+//!
+//!     // Or let the helper create the buffered file for you
+//!     instance.write_to_file(&path)?;
+//!     std::fs::remove_file(path)?;
+//!     Ok(())
+//! }
+//! ```
+//!
 //! The five integers correspond to grid dimensions, capacity/cost bounds
 //! and RNG seed. See [`GridGraphParams`] for details.
 
 use std::collections::VecDeque;
 use std::fmt;
+use std::io::{self, Write};
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -214,6 +249,29 @@ impl DimacsInstance {
         let mut out = String::new();
         self.write_dimacs(&mut out).unwrap();
         out
+    }
+
+    /// Stream the DIMACS output into any [`io::Write`] implementor.
+    pub fn write_dimacs_io<W: io::Write>(&self, mut writer: W) -> io::Result<()> {
+        struct Adapter<'a, W: io::Write>(&'a mut W);
+
+        impl<'a, W: io::Write> fmt::Write for Adapter<'a, W> {
+            fn write_str(&mut self, s: &str) -> fmt::Result {
+                self.0.write_all(s.as_bytes()).map_err(|_| fmt::Error)
+            }
+        }
+
+        let mut adapter = Adapter(&mut writer);
+        self.write_dimacs(&mut adapter)
+            .map_err(|_| io::Error::new(io::ErrorKind::Other, "failed to format DIMACS output"))
+    }
+
+    /// Convenience helper that writes the DIMACS output to a buffered file on disk.
+    pub fn write_to_file<P: AsRef<std::path::Path>>(&self, path: P) -> io::Result<()> {
+        let file = std::fs::File::create(path)?;
+        let mut buf = io::BufWriter::new(file);
+        self.write_dimacs_io(&mut buf)?;
+        buf.flush()
     }
 }
 
