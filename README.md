@@ -23,8 +23,8 @@ cargo run --release -- 3 3 100 10 12345
 
 | Parameter | Description |
 |-----------|-------------|
-| `H` | Grid height (rows) |
-| `W` | Grid width (columns, >= 2) |
+| `HEIGHT` | Grid height (rows) |
+| `WIDTH` | Grid width (columns, >= 2) |
 | `MAXCAP` | Maximum arc capacity |
 | `MAXCOST` | Maximum arc cost |
 | `SEED` | Positive integer RNG seed |
