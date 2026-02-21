@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 description = "Rust rewrite of GRIDGRAPH, a min-cost flow grid graph generator"
 license = "MIT"
+repository = "https://github.com/vini-fda/gridgraph_rs"
 keywords = ["network-flow", "min-cost-flow", "dimacs", "graph-generator"]
 categories = ["command-line-utilities", "algorithms"]
 readme = "README.md"
