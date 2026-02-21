@@ -10,7 +10,12 @@ Fortran reference.
 ## Command-line usage
 
 ```
-echo "H W MAXCAP MAXCOST SEED" | cargo run --release
+cargo run --release -- HEIGHT WIDTH MAXCAP MAXCOST SEED
+```
+
+For example:
+```
+cargo run --release -- 3 3 100 10 12345
 ```
 
 | Parameter | Description |
